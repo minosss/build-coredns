@@ -1,0 +1,32 @@
+name: Build CoreDNS
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *'
+   
+jobs:
+  build-coredns:
+    runs-on: macos-11
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.0
+        with:
+          repository: 'coredns/coredns'
+      
+      - name: Setup Go environment
+        uses: actions/setup-go@v3.0.0
+        with:
+          go-version: '1.17'
+      
+      - name: Append custom plugins
+        run: echo 'alternate:github.com/coredns/alternate' >> plugin.cfg
+        
+      - name: Build
+        run: make
+       
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: darwin-coredns
+          path: coredns
