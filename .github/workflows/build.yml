@@ -7,7 +7,11 @@ on:
    
 jobs:
   build-coredns:
-    runs-on: macos-11
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, macOS-11]
     steps:
       - name: Checkout
         uses: actions/checkout@v3.0.0
@@ -28,5 +32,5 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: darwin-coredns
+          name: ${{ matrix.os }}-coredns
           path: coredns
