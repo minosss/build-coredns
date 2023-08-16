@@ -24,7 +24,7 @@ jobs:
         run: echo 'alternate:github.com/coredns/alternate' >> plugin.cfg
         
       - name: Build
-        run: make
+        run: SYSTEM="GOOS=darwin GOARCH=arm64" make
        
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3
